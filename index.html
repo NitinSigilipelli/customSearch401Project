@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Search Engine</title>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        /* Basic styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: green;
+            padding: 10px;
+            color: #fff;
+        }
+
+        /* Logo and project name */
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Navigation links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* Search container styles */
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Empty data display tag */
+        .data-display {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        /* Add a hover effect to scale and add a shadow on hover */
+        .data-display:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* Logout and about us buttons */
+        .logout-button, .about-us-button {
+            background-color: green;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        body, html {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Set the height to 100% to cover the entire viewport */
+            background-image: linear-gradient(to bottom, #ccc, #999); /* Gray gradient */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+        }
+
+        .logout-button:hover, .about-us-button:hover {
+            background-color: blue;
+        }
+
+        /* Centered text */
+        .text-center {
+            text-align: center;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-in animation for search bar */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        .search-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+        }
+
+        .links-text {
+            font-size: 20px;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">My Search Engine</div>
+        <ul class="nav-links">
+            <li><a href="welcome.html" id="logout-button" class="logout-button">Logout</a></li>
+            <li><a href="aboutus.html" id="about-us-button" class="about-us-button">About Us</a></li>
+        </ul>
+    </div>
+    <p class="text-center search-text">Search & Get</p>
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search...">
+        <button class="search-button">Search</button>
+    </div><br><br>
+    <b><p class="text-center links-text">All Links are available at one place</p></b>
+    <div class="data-display">
+        <!-- Data will be displayed here after searching -->
+    </div>
+    <script>
+        // Your Firebase and Telegram Bot code goes here
+    
+        // Get references to HTML elements
+        const searchBox = document.querySelector('.search-box');
+        const searchButton = document.querySelector('.search-button');
+        const dataDisplay = document.querySelector('.data-display');
+        const apiKey = 'AIzaSyDlQapsRJ-Dgo_3nne9CJyIGCbkDrQSito';
+        const searchEngineId = '365172997b8ec4a98';
+        const apiUrl = 'https://www.googleapis.com/customsearch/v1';
+    
+        // Add an event listener to the search button
+        searchButton.addEventListener('click', () => {
+            const query = searchBox.value.trim(); // Get the user's search query
+    
+            if (query) {
+                // Make an API request to Google Custom Search
+                axios
+                    .get(apiUrl, {
+                        params: {
+                            key: apiKey,
+                            cx: searchEngineId,
+                            q: query,
+                        },
+                    })
+                    .then((response) => {
+                        const searchResults = response.data.items;
+    
+                        // Clear previous search results
+                        dataDisplay.innerHTML = '';
+                        dataDisplay.style.backgroundColor = '#fff'
+    
+                        if (searchResults.length > 0) {
+                            // Create an unordered list to hold the search results
+                            const resultList = document.createElement('ul');
+    
+                            // Loop through the search results and create list items
+                            searchResults.forEach((result) => {
+                                const title = result.title;
+                                const link = result.link;
+    
+                                // Create a list item with an anchor link for each result
+                                const listItem = document.createElement('li');
+                                const linkElement = document.createElement('a');
+                                linkElement.href = link;
+                                linkElement.target = '_blank';
+                                linkElement.textContent = title;
+    
+                                // Append the link to the list item and the list item to the result list
+                                listItem.appendChild(linkElement);
+                                resultList.appendChild(listItem);
+                            });
+    
+                            // Append the result list to the dataDisplay element
+
+                            dataDisplay.appendChild(resultList);
+                        } else {
+                            // Display a message if no results are found
+                            dataDisplay.textContent = 'No results found.';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        // Display an error message if the API request fails
+                        dataDisplay.textContent = 'An error occurred while searching.';
+                    });
+            }
+        });
+        // Get a reference to the logout button
+        const logoutButton = document.getElementById('logout-button');
+
+        // Add an event listener to the logout button
+        logoutButton.addEventListener('click', () => {
+            // Clear the browsing history and redirect to the login page
+            window.location.replace('welcome.html');
+        });
+
+        // Apply the slide-in animation to the search bar
+        const searchContainer = document.querySelector('.search-container');
+        searchContainer.style.animation = 'slideIn 1s forwards';
+    </script>
+    
+</body>
+</html>

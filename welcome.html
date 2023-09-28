@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Search Engine</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <style>
+        /* Basic styles for the page */
+        body, html {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Set the height to 100% to cover the entire viewport */
+            background-image: linear-gradient(to bottom, #ccc, #999); /* Gray gradient */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+        }
+
+        h1{
+            color: black;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: green;
+            padding: 10px;
+        }
+
+        /* Logo and website name */
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Navigation links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Main content container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Additional information section */
+        .info-section {
+            margin-top: 20px;
+            color: black;
+        }
+
+        /* Button styles */
+        .login-button, .signup-button {
+            background-color: green;
+            color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .login-button:hover, .signup-button:hover {
+            background-color: blue;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">My Search Engine</div>
+        <ul class="nav-links">
+            <li><a href="login.html" class="login-button">Login</a></li>
+            <li><a href="signup.html" class="signup-button">Signup</a></li>
+        </ul>
+    </div>
+    <br><br>
+    <div class="container">
+        <h1>Welcome to My Search Engine</h1>
+        <div class="info-section">
+            <p>This is a powerful search engine that helps you find information quickly and efficiently. Whether you're looking for articles, images, or anything else, we've got you covered. Start searching now!</p>
+        </div>
+    </div>
+</body>
+</html>
